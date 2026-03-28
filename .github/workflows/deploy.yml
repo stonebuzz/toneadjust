@@ -1,0 +1,92 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      # ── Assets publics requis par AlphaTab (non versionnés) ──────────────────
+
+      - name: Copy AlphaTab bundles from node_modules
+        working-directory: frontend
+        run: |
+          cp node_modules/@coderline/alphatab/dist/alphaTab.mjs         public/alphaTab.core.mjs
+          cp node_modules/@coderline/alphatab/dist/alphaTab.worker.mjs  public/alphaTab.worker.mjs
+          cp node_modules/@coderline/alphatab/dist/alphaTab.worklet.mjs public/alphaTab.worklet.mjs
+
+      - name: Copy Bravura fonts from node_modules
+        working-directory: frontend
+        run: cp -r node_modules/@coderline/alphatab/dist/font public/font
+
+      - name: Download SoundFont Sonivox
+        working-directory: frontend
+        run: |
+          curl -fsSL \
+            "https://github.com/CoderLine/alphaTab/raw/develop/src/assets/soundfont/sonivox.sf2" \
+            -o public/sonivox.sf2
+
+      # ── Build Vite avec la base GitHub Pages ─────────────────────────────────
+
+      - name: Build
+        working-directory: frontend
+        run: npx vite build --base=/toneadjust/
+
+      # ── SPA routing : 404.html = index.html ──────────────────────────────────
+      # GitHub Pages sert 404.html pour les routes inconnues.
+      # React Router prend ensuite le relais côté client.
+
+      - name: Create 404.html for SPA routing
+        working-directory: frontend/dist
+        run: cp index.html 404.html
+
+      # ── Upload artifact ───────────────────────────────────────────────────────
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
