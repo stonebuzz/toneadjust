@@ -47,12 +47,9 @@ jobs:
         working-directory: frontend
         run: cp -r node_modules/@coderline/alphatab/dist/font public/font
 
-      - name: Download SoundFont Sonivox
+      - name: Copy SoundFont from node_modules
         working-directory: frontend
-        run: |
-          curl -fsSL \
-            "https://github.com/CoderLine/alphaTab/raw/develop/src/assets/soundfont/sonivox.sf2" \
-            -o public/sonivox.sf2
+        run: cp node_modules/@coderline/alphatab/dist/soundfont/sonivox.sf2 public/sonivox.sf2
 
       # ── Build Vite avec la base GitHub Pages ─────────────────────────────────
 
