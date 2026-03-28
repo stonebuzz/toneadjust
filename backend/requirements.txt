@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+yt-dlp
+demucs
+librosa
+numpy
+scipy
+sqlalchemy
+aiosqlite
+musicbrainzngs
+python-dotenv
+httpx
+secretstorage

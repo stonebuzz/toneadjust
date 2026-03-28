@@ -1,0 +1,39 @@
+# ── Downloads & base de données ──────────────────────────────────────────────
+downloads/
+*.db
+*.db-shm
+*.db-wal
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Variables d'environnement ─────────────────────────────────────────────────
+.env
+!.env.example
+
+# ── Node / Frontend ───────────────────────────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ── Modèles Demucs (téléchargés automatiquement, volumineux) ──────────────────
+~/.cache/torch/hub/
+
+# ── IDE & OS ──────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ── Agent ─────────────────────────────────────────────────────────────────────
+.claude/
