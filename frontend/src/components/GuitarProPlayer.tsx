@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
+import { apiUrl } from '@/lib/api'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -365,7 +366,7 @@ export function GuitarProPlayer({ mbRecordingId }: { mbRecordingId: string }) {
   const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
-    fetch(`/api/tab/${mbRecordingId}`)
+    fetch(apiUrl(`/api/tab/${mbRecordingId}`))
       .then(r => r.json())
       .then(setTabInfo)
       .finally(() => setLoading(false))
@@ -376,7 +377,7 @@ export function GuitarProPlayer({ mbRecordingId }: { mbRecordingId: string }) {
     form.append('file', file)
     setUploading(true)
     try {
-      const res = await fetch(`/api/tab/${mbRecordingId}/upload`, { method: 'POST', body: form })
+      const res = await fetch(apiUrl(`/api/tab/${mbRecordingId}/upload`), { method: 'POST', body: form })
       if (!res.ok) {
         const err = await res.json()
         alert(err.detail ?? 'Erreur lors de l\'upload')

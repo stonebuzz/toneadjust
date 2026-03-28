@@ -4,6 +4,7 @@ import { AlertCircle, Check, Loader2, Music2, X } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { apiUrl } from '@/lib/api'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -180,7 +181,7 @@ export function AnalysisModal({ isOpen, onClose, artist, song, trackSearching, t
     setYoutubeResults([])
 
     try {
-      const res = await fetch('/api/youtube-search', {
+      const res = await fetch(apiUrl('/api/youtube-search'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ artist: record.artist, song: record.title }),
@@ -206,7 +207,7 @@ export function AnalysisModal({ isOpen, onClose, artist, song, trackSearching, t
 
     async function run() {
       try {
-        const res = await fetch('/api/analyze', {
+        const res = await fetch(apiUrl('/api/analyze'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

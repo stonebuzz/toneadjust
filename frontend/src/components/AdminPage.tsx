@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { AlertTriangle, ArrowLeft, Database, FolderOpen, Music2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { apiUrl } from '@/lib/api'
 
 interface ActionCardProps {
   icon: React.ReactNode
@@ -96,12 +97,12 @@ export function AdminPage() {
   const navigate = useNavigate()
 
   async function clearDb() {
-    const res = await fetch('/api/admin/clear-db', { method: 'POST' })
+    const res = await fetch(apiUrl('/api/admin/clear-db'), { method: 'POST' })
     if (!res.ok) throw new Error(`Erreur serveur : ${res.status}`)
   }
 
   async function clearDownloads() {
-    const res = await fetch('/api/admin/clear-downloads', { method: 'POST' })
+    const res = await fetch(apiUrl('/api/admin/clear-downloads'), { method: 'POST' })
     if (!res.ok) throw new Error(`Erreur serveur : ${res.status}`)
   }
 

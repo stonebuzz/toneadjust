@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { apiUrl } from '@/lib/api'
 
 interface RecentSong {
   id: number
@@ -38,7 +39,7 @@ export function SearchForm() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('/api/songs')
+    fetch(apiUrl('/api/songs'))
       .then(r => r.json())
       .then(data => setRecentSongs(data.songs ?? []))
       .catch(() => {})
@@ -60,7 +61,7 @@ export function SearchForm() {
     setModalOpen(true)
 
     try {
-      const res = await fetch('/api/track-search', {
+      const res = await fetch(apiUrl('/api/track-search'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ artist: artistInput.trim(), title: titleInput.trim() }),
@@ -80,7 +81,7 @@ export function SearchForm() {
   function handleModalClose() {
     searchAbort.current?.abort()
     setModalOpen(false)
-    fetch('/api/songs')
+    fetch(apiUrl('/api/songs'))
       .then(r => r.json())
       .then(data => setRecentSongs(data.songs ?? []))
       .catch(() => {})

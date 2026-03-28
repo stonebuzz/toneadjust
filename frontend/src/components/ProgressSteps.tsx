@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Badge } from '@/components/ui/badge'
+import { apiUrl } from '@/lib/api'
 
 type StepStatus = 'pending' | 'processing' | 'done' | 'error'
 
@@ -32,7 +33,7 @@ export function ProgressSteps() {
 
     async function run() {
       try {
-        const res = await fetch('/api/analyze', {
+        const res = await fetch(apiUrl('/api/analyze'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ artist, song, video_url }),

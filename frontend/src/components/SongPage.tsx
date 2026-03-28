@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
+import { apiUrl } from '@/lib/api'
 import { GuitarProPlayer } from '@/components/GuitarProPlayer'
 
 // ── Interfaces ─────────────────────────────────────────────────────────────────
@@ -593,7 +594,7 @@ export function SongPage() {
     if (data) return
     async function load() {
       try {
-        const res = await fetch(`/api/songs/${mb_recording_id}`)
+        const res = await fetch(apiUrl(`/api/songs/${mb_recording_id}`))
         const json = await res.json()
         if (json.song) setData(json.song)
       } finally {
