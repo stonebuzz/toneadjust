@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { apiUrl } from '@/lib/api'
+import { API_BASE, apiUrl } from '@/lib/api'
 
 interface RecentSong {
   id: number
@@ -115,6 +115,21 @@ export function SearchForm() {
         </div>
       </header>
 
+      {/* Bannière "pas de backend" */}
+      {!API_BASE && (
+        <div className="bg-amber-50 border-b border-amber-200 px-5 py-3 text-center text-sm text-amber-800">
+          <span className="font-semibold">Mode démonstration</span> — Cette interface nécessite un backend local pour fonctionner.{' '}
+          <a
+            href="https://github.com/stonebuzz/toneadjust#installation"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-amber-900"
+          >
+            Voir le README
+          </a>
+        </div>
+      )}
+
       {/* Main content */}
       <main className="flex flex-col items-center gap-12 px-4 pb-12 pt-16">
         {/* Search section */}
@@ -144,7 +159,7 @@ export function SearchForm() {
                 />
               </div>
             </div>
-            <Button type="submit" disabled={!titleInput.trim()} className="w-full gap-2">
+            <Button type="submit" disabled={!titleInput.trim() || !API_BASE} className="w-full gap-2">
               <Search className="h-4 w-4" />
               Rechercher
             </Button>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { AlertTriangle, ArrowLeft, Database, FolderOpen, Music2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { apiUrl } from '@/lib/api'
+import { API_BASE, apiUrl } from '@/lib/api'
 
 interface ActionCardProps {
   icon: React.ReactNode
@@ -11,9 +11,10 @@ interface ActionCardProps {
   description: string
   confirmText: string
   onConfirm: () => Promise<void>
+  disabled?: boolean
 }
 
-function ActionCard({ icon, title, description, confirmText, onConfirm }: ActionCardProps) {
+function ActionCard({ icon, title, description, confirmText, onConfirm, disabled }: ActionCardProps) {
   const [confirming, setConfirming] = useState(false)
   const [loading, setLoading]       = useState(false)
   const [done, setDone]             = useState(false)
@@ -56,6 +57,7 @@ function ActionCard({ icon, title, description, confirmText, onConfirm }: Action
             variant="outline"
             size="sm"
             onClick={() => { setDone(false); setConfirming(true) }}
+            disabled={disabled}
           >
             {title}
           </Button>
@@ -122,6 +124,13 @@ export function AdminPage() {
         </Button>
       </header>
 
+      {/* Bannière "pas de backend" */}
+      {!API_BASE && (
+        <div className="bg-amber-50 border-b border-amber-200 px-5 py-3 text-center text-sm text-amber-800">
+          <span className="font-semibold">Mode démonstration</span> — Les actions d'administration nécessitent un backend local.
+        </div>
+      )}
+
       {/* Content */}
       <main className="mx-auto w-full max-w-xl px-4 py-12 space-y-8">
         <div className="space-y-1">
@@ -138,6 +147,7 @@ export function AdminPage() {
             description="Supprime toutes les chansons ainsi que les genres, labels, membres et instruments associés. Les tables sont conservées et prêtes à être remplies à nouveau."
             confirmText="Toutes les données seront supprimées définitivement."
             onConfirm={clearDb}
+            disabled={!API_BASE}
           />
 
           <ActionCard
@@ -146,6 +156,7 @@ export function AdminPage() {
             description="Supprime tous les fichiers audio et stems présents dans le dossier downloads/. Le dossier est recréé vide après l'opération."
             confirmText="Tous les fichiers audio et stems seront supprimés définitivement."
             onConfirm={clearDownloads}
+            disabled={!API_BASE}
           />
         </div>
       </main>
