@@ -24,6 +24,17 @@ node_modules/
 frontend/dist/
 frontend/.vite/
 
+# ── Assets binaires public (copiés depuis node_modules ou téléchargés) ────────
+# AlphaTab — copier depuis node_modules/@coderline/alphatab/dist/
+frontend/public/alphaTab.core.mjs
+frontend/public/alphaTab.worker.mjs
+frontend/public/alphaTab.worklet.mjs
+# Polices Bravura — copier depuis node_modules/@coderline/alphatab/dist/font/
+frontend/public/font/
+# SoundFont — à télécharger séparément
+frontend/public/sonivox.sf2
+frontend/public/soundfont/
+
 # ── Modèles Demucs (téléchargés automatiquement, volumineux) ──────────────────
 ~/.cache/torch/hub/
 
